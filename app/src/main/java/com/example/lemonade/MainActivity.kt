@@ -45,33 +45,33 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LemonadeApp() {
     // State to track the current step of the app (1: Lemon tree, 2: Lemon, 3: Lemonade, 4: Empty glass)
-    val currentStep = remember { mutableIntStateOf(1) } // Use mutableIntStateOf for currentStep as it's an Int
+    val currentStep = remember { mutableStateOf(1) } // Use mutableIntStateOf for currentStep as it's an Int
     // State to track how many times the user has tapped to squeeze the lemon
-    val currentTaps = remember { mutableIntStateOf(0) } // Use mutableIntStateOf for Int state
+    val currentTaps = remember { mutableStateOf(0) } // Use mutableIntStateOf for Int state
     // Randomize the total number of taps needed to squeeze the lemon (between 2 and 4)
-    val totalTaps = remember { mutableIntStateOf((2..4).random()) } // Use mutableIntStateOf for Int state
+    val totalTaps = remember { mutableStateOf((2..4).random()) } // Use mutableIntStateOf for Int state
 
     // Handle image click for progressing through the app
     fun onImageClick() {
         // Check which step the app is currently on and handle user interaction accordingly
-        when (currentStep.intValue) {
+        when (currentStep.value) {
             1 -> { // Tap on the lemon tree to move to the next step
-                currentStep.intValue = 2
+                currentStep.value = 2
             }
             2 -> { // Tap on the lemon to squeeze
                 currentTaps.value += 1
                 // Once the required number of taps is reached, move to the lemonade step
-                if (currentTaps.intValue >= totalTaps.intValue) {
-                    currentStep.intValue = 3
+                if (currentTaps.value >= totalTaps.value) {
+                    currentStep.value = 3
                 }
             }
             3 -> { // Tap on the lemonade glass to finish
-                currentStep.intValue = 4
+                currentStep.value = 4
             }
             4 -> { // Tap on the empty glass to restart the game
-                currentStep.intValue = 1
-                currentTaps.intValue = 0
-                totalTaps.intValue = (2..4).random() // Reset the number of taps required
+                currentStep.value = 1
+                currentTaps.value = 0
+                totalTaps.value = (2..4).random() // Reset the number of taps required
             }
         }
     }
@@ -85,7 +85,7 @@ fun LemonadeApp() {
             .clickable { onImageClick() } // Make the entire Box clickable to trigger the step change
     ) {
         // Display content based on the current step
-        when (currentStep.intValue) {
+        when (currentStep.value) {
             1 -> LemonadeStep(
                 imageRes = R.drawable.lemon_tree, // Display the lemon tree image
                 textRes = R.string.tap_lemon_tree, // Display the text for the lemon tree
@@ -94,7 +94,7 @@ fun LemonadeApp() {
             2 -> LemonadeStep(
                 imageRes = R.drawable.lemon_squeeze, // Display the lemon squeezing image
                 textRes = R.string.squeeze_lemon, // Display the squeeze text
-                remainingTapsText = "${totalTaps.intValue - currentTaps.intValue} taps left", // Show remaining taps
+                remainingTapsText = "${totalTaps.value - currentTaps.value} taps left", // Show remaining taps
                 contentDescriptionRes = R.string.content_desc_lemon // Content description for accessibility
             )
             3 -> LemonadeStep(
