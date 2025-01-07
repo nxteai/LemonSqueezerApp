@@ -20,6 +20,9 @@ To run this project locally:
 
 3. Build and run the app on an emulator or device.
 
+## Screenshots
+
+
 ## Technologies Used
 
 - **Jetpack Compose** for building UI.
